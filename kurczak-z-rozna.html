@@ -1,0 +1,375 @@
+<!--
+Restaurant Boilerplate Setup
+1. Update restaurant details, contact information, contactHeading, Google Maps URL/coordinates, and review links in the RESTAURANT config at the start of the script.
+2. Edit the openingHours array in that config. Use 24-hour HH:MM values, or null for a closed day.
+3. Update menu categories and dishes in the menu array; each item supports a description, price, and featured flag.
+4. Change the theme in the :root CSS variables. Dark-mode overrides are grouped below the base theme.
+5. Replace the Open Graph image URL and keep the static title/description metadata in the head in sync before publishing; social crawlers may not run JavaScript.
+-->
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" id="meta-description" content="Kurczak z rożna w Mikołowie, ul. Młyńska 2. Cały kurczak, pół, ćwiartka, zestawy z frytkami i surówką, pierogi. Na wynos, bezpłatny parking.">
+<meta property="og:title" id="og-title" content="Kurczak z rożna Mikołów | Młyńska 2 | Na wynos">
+<meta property="og:description" id="og-description" content="Kurczak z rożna w Mikołowie, ul. Młyńska 2. Cały kurczak, pół, ćwiartka, zestawy z frytkami i surówką, pierogi. Na wynos, bezpłatny parking.">
+<meta property="og:image" id="og-image" content="https://example.com/restaurant-cover.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%97%3C/text%3E%3C/svg%3E">
+<title id="page-title">Kurczak z rożna Mikołów | Młyńska 2 | Na wynos</title>
+<script type="application/ld+json" id="restaurant-schema">{}</script>
+<style>
+:root{--bg:#fff8ee;--card:#fff;--ink:#2a1a10;--muted:#6e5948;--accent:#c2410c;--accent-d:#9a3412;--soft:#ffedd5;--line:#f0d9bd;--dark:#240f06;--star:#f59e0b;--white:#fff;--hero-text:#fff3e2;--hero-copy:#fed7aa;--hero-highlight:#fdba74;--hero-start:#3a1306;--hero-mid:#7c2d12;--hero-end:#b45309;--hero-glow:#f97316;--footer-text:#c4a98a;--footer-logo:#f8ead8;--font-body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--font-display:Georgia,"Times New Roman",serif;--radius-pill:999px;--radius-small:12px;--radius-card:18px;--radius-panel:22px;--radius-large:24px;--radius-hero:44px;--radius-circle:50%;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1009;--card:#28170d;--ink:#f8ead8;--muted:#c9b39b;--accent:#fb923c;--accent-d:#fdba74;--soft:#34200f;--line:#4a301b;--dark:#0e0703}}
+:root[data-theme="dark"]{--bg:#1b1009;--card:#28170d;--ink:#f8ead8;--muted:#c9b39b;--accent:#fb923c;--accent-d:#fdba74;--soft:#34200f;--line:#4a301b;--dark:#0e0703}
+html{height:100%;scroll-behavior:smooth;scroll-padding-top:calc(70px + env(safe-area-inset-top,0px))}
+*{box-sizing:border-box}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--font-body);line-height:1.6;padding-bottom:84px}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+var RESTAURANT={
+name:'Kurczak z rożna',
+contactHeading:'Odwiedź nas w Mikołowie',
+pageTitle:'Kurczak z rożna Mikołów | Młyńska 2 | Na wynos',
+description:'Kurczak z rożna w Mikołowie, ul. Młyńska 2. Cały kurczak, pół, ćwiartka, zestawy z frytkami i surówką, pierogi. Na wynos, bezpłatny parking.',
+hero:{title:'Kurczak z rożna',subtitle:'prosto na Twój stół',description:'Złocisty, soczysty kurczak z rożna na wynos. Cały, pół albo ćwiartka, a do tego frytki, surówka i sos.'},
+telephone:{display:'452 197 824',href:'+48452197824'},
+address:{street:'ul. Młyńska 2',postalCode:'43-190',locality:'Mikołów',country:'PL'},
+coordinates:{latitude:null,longitude:null},
+mapsUrl:'https://maps.app.goo.gl/hJu5gq3cdENFEJ2G9',
+reviewUrl:'https://maps.app.goo.gl/hJu5gq3cdENFEJ2G9',
+ogImage:'https://example.com/restaurant-cover.jpg',
+cuisine:'Kurczak z rożna',
+priceRange:'20-40 PLN',
+timezone:'Europe/Warsaw',
+openingHours:[
+{day:1,label:'Poniedziałek',schemaDay:'Monday',open:'11:00',close:'18:00'},
+{day:2,label:'Wtorek',schemaDay:'Tuesday',open:'11:00',close:'18:00'},
+{day:3,label:'Środa',schemaDay:'Wednesday',open:'11:00',close:'18:00'},
+{day:4,label:'Czwartek',schemaDay:'Thursday',open:'11:00',close:'18:00'},
+{day:5,label:'Piątek',schemaDay:'Friday',open:'11:00',close:'18:00'},
+{day:6,label:'Sobota',schemaDay:'Saturday',open:'11:00',close:'18:00'},
+{day:0,label:'Niedziela',schemaDay:'Sunday',open:null,close:null}
+],
+highlights:[
+{icon:'🥡',title:'Na wynos',detail:'szybko i na ciepło'},
+{icon:'🅿️',title:'Bezpłatny parking',detail:'dużo wolnych miejsc'},
+{icon:'💰',title:'20–40 zł',detail:'średnio na osobę'}
+],
+menu:[
+{title:'🍗 Kurczak z rożna',items:[
+{name:'Kurczak z rożna',description:'Cały kurczak, idealny dla całej rodziny',price:'40 zł',featured:true},
+{name:'Pół kurczaka',price:'20 zł'},
+{name:'Ćwiartka',price:'12 zł'}]},
+{title:'🍟 Zestawy obiadowe',items:[
+{name:'Zestaw pół kurczaka',description:'Frytki, surówka, sos',price:'30 zł',featured:true},
+{name:'Zestaw ćwiartka',description:'Frytki, surówka, sos',price:'22 zł'}]},
+{title:'🥟 Dodatki i przekąski',items:[
+{name:'Pierogi z mięsem',description:'10 pierogów smażonych we frytkownicy, sos',price:'18 zł'},
+{name:'Pierogi z ziemniakami',description:'10 pierogów smażonych we frytkownicy, sos',price:'15 zł'},
+{name:'Frytki z nuggetsami',price:'15 zł'},
+{name:'Skrzydełka z frytkami',price:'18 zł'}]}
+],
+rating:4.9,
+reviewCount:26,
+reviews:[
+{quote:'Bardzo smaczny, soczysty i przyprawiony kurczak. Obsługa bardzo miła. Polecam. Na pewno mają Państwo następnego stałego klienta 😍',tags:['Jedzenie 5/5','Obsługa 5/5','Atmosfera 5/5','Na wynos'],author:'Mariusz D.',initials:'M',source:'Opinia z Google · miesiąc temu'}
+],
+orderSteps:[
+{icon:'📞',title:'Zadzwoń',description:'{{phone}}, podaj co chcesz zamówić.'},
+{icon:'🚗',title:'Przyjedź',description:'{{street}}, bezpłatny parking.'},
+{icon:'🥡',title:'Odbierz i smacznego',description:'Gorące jedzenie na wynos.'}
+]
+};
+
+(function(){
+var weekdayNames={Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6,Sun:0};
+var weekdayByNumber={};
+RESTAURANT.openingHours.forEach(function(hours){weekdayByNumber[hours.day]=hours});
+var phoneHref='tel:'+RESTAURANT.telephone.href;
+var mapsHref=RESTAURANT.coordinates.latitude!==null&&RESTAURANT.coordinates.longitude!==null
+?'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(RESTAURANT.coordinates.latitude+','+RESTAURANT.coordinates.longitude)
+:RESTAURANT.mapsUrl;
+var ratingLabel=RESTAURANT.rating.toLocaleString('pl-PL',{minimumFractionDigits:1,maximumFractionDigits:1});
+var addressLine=RESTAURANT.address.postalCode+' '+RESTAURANT.address.locality;
+
+function setText(id,value){document.getElementById(id).textContent=value}
+function setHref(id,value){document.getElementById(id).href=value}
+function parseTime(value){var parts=value.split(':');return parseInt(parts[0],10)*60+parseInt(parts[1],10)}
+function renderBrand(){
+var headerBrand=document.getElementById('header-brand');
+var separator=RESTAURANT.name.indexOf(' ');
+var primary=separator<0?RESTAURANT.name:RESTAURANT.name.slice(0,separator);
+var secondary=separator<0?'':RESTAURANT.name.slice(separator+1);
+headerBrand.textContent=primary+' ';
+if(secondary){var accent=document.createElement('span');accent.textContent=secondary;headerBrand.appendChild(accent)}
+setText('footer-brand',RESTAURANT.name);
+}
+function renderMenu(){
+var container=document.getElementById('menu-content');
+RESTAURANT.menu.forEach(function(category){
+var heading=document.createElement('div');heading.className='group';heading.textContent=category.title;container.appendChild(heading);
+var grid=document.createElement('div');grid.className='menu';grid.style.marginTop='14px';
+category.items.forEach(function(item){
+var card=document.createElement('div');card.className='item'+(item.featured?' hit':'');
+var details=document.createElement('div');var title=document.createElement('h3');title.textContent=item.name;details.appendChild(title);
+if(item.description){var description=document.createElement('p');description.textContent=item.description;details.appendChild(description)}
+var price=document.createElement('div');price.className='price';price.textContent=item.price;
+card.appendChild(details);card.appendChild(price);grid.appendChild(card);
+});
+container.appendChild(grid);
+});
+}
+function renderHighlights(){
+var container=document.getElementById('facts-content');
+setText('rating-value',ratingLabel);setText('rating-count','w Google · '+RESTAURANT.reviewCount+' opinii');
+RESTAURANT.highlights.forEach(function(highlight){
+var item=document.createElement('div');var title=document.createElement('b');var detail=document.createElement('span');
+title.textContent=highlight.icon+' '+highlight.title;detail.textContent=highlight.detail;item.appendChild(title);item.appendChild(detail);container.appendChild(item);
+});
+}
+function renderReviews(){
+var container=document.getElementById('reviews-content');
+var summary=document.createElement('div');summary.className='score';
+var rating=document.createElement('big');rating.textContent=ratingLabel;
+var stars=document.createElement('div');stars.className='stars';stars.textContent='★★★★★';
+var label=document.createElement('b');label.textContent='Ocena w Google';
+var count=document.createElement('small');count.textContent=RESTAURANT.reviewCount+' opinii';
+summary.appendChild(rating);summary.appendChild(stars);summary.appendChild(label);summary.appendChild(count);container.appendChild(summary);
+RESTAURANT.reviews.forEach(function(review){
+var card=document.createElement('figure');card.className='quote';var quote=document.createElement('p');quote.textContent=review.quote;card.appendChild(quote);
+var chips=document.createElement('div');chips.className='chips';review.tags.forEach(function(tag){var chip=document.createElement('span');chip.textContent=tag;chips.appendChild(chip)});card.appendChild(chips);
+var author=document.createElement('div');author.className='who';var initials=document.createElement('div');initials.className='av';initials.textContent=review.initials;
+var identity=document.createElement('div');var name=document.createElement('b');name.textContent=review.author;var source=document.createElement('small');source.textContent=review.source;
+identity.appendChild(name);identity.appendChild(source);author.appendChild(initials);author.appendChild(identity);card.appendChild(author);container.appendChild(card);
+});
+}
+function renderSteps(){
+var container=document.getElementById('order-steps');container.textContent='';
+RESTAURANT.orderSteps.forEach(function(step){
+var item=document.createElement('div');var icon=document.createElement('i');icon.textContent=step.icon;
+var title=document.createElement('b');title.textContent=step.title;var description=document.createElement('span');description.textContent=step.description.replace('{{phone}}',RESTAURANT.telephone.display).replace('{{street}}',RESTAURANT.address.street);
+item.appendChild(icon);item.appendChild(title);item.appendChild(document.createElement('br'));item.appendChild(description);container.appendChild(item);
+});
+}
+function renderHours(){
+var body=document.getElementById('hours-body');body.textContent='';
+RESTAURANT.openingHours.forEach(function(hours){
+var row=document.createElement('tr');row.setAttribute('data-d',hours.day);
+var day=document.createElement('td');day.textContent=hours.label;var times=document.createElement('td');times.textContent=hours.open&&hours.close?hours.open+' – '+hours.close:'Zamknięte';
+row.appendChild(day);row.appendChild(times);body.appendChild(row);
+});
+}
+function renderMetadata(){
+document.title=RESTAURANT.pageTitle;
+document.getElementById('meta-description').content=RESTAURANT.description;
+document.getElementById('og-title').content=RESTAURANT.pageTitle;
+document.getElementById('og-description').content=RESTAURANT.description;
+document.getElementById('og-image').content=RESTAURANT.ogImage;
+var schema={
+'@context':'https://schema.org','@type':'Restaurant',name:RESTAURANT.name,telephone:RESTAURANT.telephone.href,
+servesCuisine:RESTAURANT.cuisine,priceRange:RESTAURANT.priceRange,
+address:{'@type':'PostalAddress',streetAddress:RESTAURANT.address.street,postalCode:RESTAURANT.address.postalCode,addressLocality:RESTAURANT.address.locality,addressCountry:RESTAURANT.address.country},
+openingHoursSpecification:RESTAURANT.openingHours.filter(function(hours){return hours.open&&hours.close}).map(function(hours){return {'@type':'OpeningHoursSpecification',dayOfWeek:'https://schema.org/'+hours.schemaDay,opens:hours.open,closes:hours.close}}),
+hasMap:mapsHref
+};
+if(RESTAURANT.coordinates.latitude!==null&&RESTAURANT.coordinates.longitude!==null){schema.geo={'@type':'GeoCoordinates',latitude:RESTAURANT.coordinates.latitude,longitude:RESTAURANT.coordinates.longitude}}
+document.getElementById('restaurant-schema').textContent=JSON.stringify(schema);
+}
+function renderContacts(){
+setText('restaurant-location-badge',RESTAURANT.address.locality+' · '+RESTAURANT.address.street);
+setText('hero-title',RESTAURANT.hero.title);setText('hero-subtitle',RESTAURANT.hero.subtitle);setText('hero-description',RESTAURANT.hero.description);
+setText('contact-heading',RESTAURANT.contactHeading);setText('contact-name',RESTAURANT.name);setText('contact-street',RESTAURANT.address.street);setText('contact-city',addressLine);
+setText('contact-phone',RESTAURANT.telephone.display);setText('footer-details',RESTAURANT.name+' · '+RESTAURANT.address.street+', '+addressLine+' · tel. '+RESTAURANT.telephone.display);
+setText('hero-phone','Zamów: '+RESTAURANT.telephone.display);
+setHref('header-phone',phoneHref);setHref('hero-phone',phoneHref);setHref('contact-phone',phoneHref);setHref('bar-phone',phoneHref);
+setHref('maps-link',mapsHref);setHref('bar-maps',mapsHref);setHref('reviews-link',RESTAURANT.reviewUrl);
+}
+function renderOpeningStatus(){
+try{
+var parts=new Intl.DateTimeFormat('en-GB',{timeZone:RESTAURANT.timezone,weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
+var part=function(type){return parts.filter(function(value){return value.type===type})[0].value};
+var day=weekdayNames[part('weekday')],nowMinutes=parseInt(part('hour'),10)*60+parseInt(part('minute'),10);
+var today=weekdayByNumber[day],opens=today&&today.open?parseTime(today.open):null,closes=today&&today.close?parseTime(today.close):null;
+var isOpen=opens!==null&&nowMinutes>=opens&&nowMinutes<closes;
+var row=document.querySelector('#hours tr[data-d="'+day+'"]');if(row)row.className='today';
+document.getElementById('dot').className='dot '+(isOpen?'open':'closed');
+if(isOpen){setText('stat','Teraz otwarte, do '+today.close);return}
+var nextOpening=null;
+for(var offset=1;offset<=7;offset++){
+var nextDay=(day+offset)%7,candidate=weekdayByNumber[nextDay];
+if(candidate&&candidate.open){nextOpening={day:nextDay,hours:candidate};break}
+}
+if(opens!==null&&nowMinutes<opens){setText('stat','Teraz zamknięte, otwieramy o '+today.open);return}
+if(nextOpening){
+var dayLabel=nextOpening.day===((day+1)%7)?'jutro':'w '+nextOpening.hours.label.toLowerCase();
+setText('stat',(day===0?'Dziś zamknięte, zapraszamy ':'Teraz zamknięte, zapraszamy ')+dayLabel+' od '+nextOpening.hours.open);
+}else{setText('stat','Godziny otwarcia niedostępne')}
+}catch(error){setText('stat','Godziny otwarcia niedostępne')}
+}
+
+renderBrand();renderContacts();renderHighlights();renderMenu();renderSteps();renderHours();renderReviews();renderMetadata();renderOpeningStatus();
+setText('yr',new Date().getFullYear());
+var animatedElements=document.querySelectorAll('.item,.steps div,.box,.quote,.score,.facts .wrap>div');
+if('IntersectionObserver' in window){
+var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.add('in');observer.unobserve(entry.target)}})},{threshold:.12});
+animatedElements.forEach(function(element){element.classList.add('rv');observer.observe(element)});
+}
+})();
+});
+</script>
+<style>
+h1,h2,h3,.logo{font-family:var(--font-display);line-height:1.2;margin:0}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+section{padding:68px 0}
+.eyebrow{color:var(--accent);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.78rem}
+h2{font-size:clamp(1.7rem,4vw,2.4rem);margin-top:8px}
+.center{text-align:center}
+.btn{display:inline-block;padding:14px 28px;border-radius:var(--radius-pill);font-weight:700;border:2px solid transparent;transition:.2s}
+.btn-p{background:var(--accent);color:#fff}.btn-p:hover{background:var(--accent-d)}
+.btn-s{border-color:currentColor}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+.logo{font-weight:700;font-size:1.2rem}.logo span{color:var(--accent)}
+nav{display:none;gap:26px;font-size:.84rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+nav a:hover{color:var(--accent)}
+@media(min-width:820px){nav{display:flex}}
+.hero{background:radial-gradient(circle at 85% 15%,var(--hero-glow) 0,transparent 45%),linear-gradient(135deg,var(--hero-start),var(--hero-mid) 60%,var(--hero-end));color:var(--hero-text);padding:88px 0 80px;text-align:center}
+.hero h1{font-size:clamp(2.3rem,7vw,4.2rem);margin:16px auto;max-width:14ch}
+.hero p{max-width:540px;margin:0 auto 28px;font-size:1.1rem;color:var(--hero-copy)}
+.badge{display:inline-block;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);padding:6px 16px;border-radius:var(--radius-pill);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+.row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.hero .btn-s{color:var(--hero-text)}
+.status{display:inline-flex;align-items:center;gap:8px;margin-top:26px;background:rgba(0,0,0,.3);padding:8px 18px;border-radius:var(--radius-pill);font-size:.95rem}
+.dot{width:10px;height:10px;border-radius:var(--radius-circle);background:#9ca3af}.dot.open{background:#4ade80}.dot.closed{background:#f87171}
+.facts{background:var(--soft);border-block:1px solid var(--line);padding:26px 0}
+.facts .wrap{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));text-align:center}
+.facts b{display:block;font-size:1.05rem}.facts span{color:var(--muted);font-size:.9rem}
+.stars{color:var(--star);letter-spacing:2px}
+.menu{display:grid;gap:14px;margin-top:36px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.item{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-card);padding:20px 22px;transition:.2s}
+.item:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(124,45,18,.14)}
+.item h3{font-size:1.1rem}.item p{margin:4px 0 0;color:var(--muted);font-size:.88rem}
+.price{font-weight:800;color:var(--accent);white-space:nowrap;font-size:1.1rem}
+.item.hit{border-color:var(--accent);background:linear-gradient(135deg,var(--soft),var(--card))}
+.group{margin:40px 0 0;font-family:var(--font-display);font-size:1.3rem;display:flex;align-items:center;gap:10px}
+.note{margin-top:28px;text-align:center;color:var(--muted);font-size:.9rem}
+.band{background:var(--soft);border-block:1px solid var(--line)}
+.steps{display:grid;gap:18px;margin-top:34px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.steps div{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-card);padding:24px;text-align:center}
+.steps i{font-style:normal;font-size:2rem;display:block;margin-bottom:6px}
+.steps span{color:var(--muted);font-size:.92rem}
+.contact{display:grid;gap:26px;margin-top:34px;grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+.box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-panel);padding:28px}
+.box h3{margin-bottom:14px;font-size:1.2rem}
+table{width:100%;border-collapse:collapse}
+td{padding:8px 0;border-bottom:1px dashed var(--line)}td:last-child{text-align:right;font-weight:600}
+tr.today td{color:var(--accent);font-weight:800}
+.tel{font-size:1.6rem;font-weight:800;color:var(--accent);display:block;margin:8px 0 16px}
+footer{background:var(--dark);color:var(--footer-text);text-align:center;padding:34px 20px;font-size:.9rem}
+footer .logo{color:var(--footer-logo);font-size:1.25rem;margin-bottom:6px}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line)}
+.bar a{flex:1;text-align:center;padding:13px;border-radius:var(--radius-small);font-weight:700}
+.bar .c{background:var(--accent);color:#fff}.bar .m{background:var(--soft);color:var(--accent-d)}
+@media(min-width:820px){.bar{display:none}body{padding-bottom:0}}
+.hero{position:relative;overflow:hidden;border-radius:0 0 var(--radius-hero) var(--radius-hero)}
+.hero .wrap{position:relative;z-index:1}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:var(--radius-circle);background:rgba(255,255,255,.07)}
+.hero::before{width:440px;height:440px;left:-130px;bottom:-190px}
+.hero::after{width:280px;height:280px;right:-70px;top:-90px}
+.hero h1 em{font-style:normal;color:var(--hero-highlight)}
+.float{position:absolute;font-size:2.6rem;animation:fl 6s ease-in-out infinite}
+.f1{left:7%;top:24%}.f2{right:9%;bottom:22%;animation-delay:-2s}.f3{right:19%;top:14%;font-size:2rem;animation-delay:-4s}
+@keyframes fl{50%{transform:translateY(-14px) rotate(6deg)}}
+@media(max-width:760px){.float{display:none}}
+.facts{margin-top:-1px}
+.group::after{content:"";flex:1;height:1px;background:var(--line)}
+.item.hit{position:relative}
+.item.hit::after{content:"HIT";position:absolute;top:-10px;left:18px;background:var(--accent);color:var(--white);font-size:.68rem;font-weight:800;letter-spacing:.1em;padding:2px 11px;border-radius:var(--radius-pill)}
+.rev{display:grid;gap:24px;margin-top:34px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.score{background:linear-gradient(135deg,var(--hero-mid),var(--accent));color:var(--hero-text);border-radius:var(--radius-large);padding:34px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.score big{font-size:4.4rem;font-weight:800;font-family:var(--font-display);line-height:1}
+.score .stars{font-size:1.3rem}
+.score small{color:var(--hero-copy)}
+.quote{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-large);padding:34px 30px 28px;position:relative;margin:0}
+.quote::before{content:"\201C";position:absolute;top:-4px;left:22px;font-family:var(--font-display);font-size:5rem;color:var(--accent);opacity:.25;line-height:1}
+.quote p{margin:0;font-size:1.08rem;font-style:italic}
+.who{display:flex;align-items:center;gap:12px;margin-top:18px}
+.av{width:42px;height:42px;border-radius:var(--radius-circle);background:var(--accent);color:var(--white);display:grid;place-items:center;font-weight:800}
+.who small{display:block;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chips span{background:var(--soft);border-radius:var(--radius-pill);padding:4px 12px;font-size:.8rem;font-weight:600}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.float{animation:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<a href="#top" class="logo" id="header-brand">Kurczak <span>z rożna</span></a>
+<nav><a href="#menu">Menu</a><a href="#jak">Jak zamówić</a><a href="#opinie">Opinie</a><a href="#kontakt">Kontakt</a></nav>
+<a href="tel:+48452197824" id="header-phone" class="btn btn-p" style="padding:9px 20px;font-size:.9rem">Zadzwoń</a>
+</div></header>
+
+<main id="top">
+<div class="hero"><span class="float f1">🍗</span><span class="float f2">🍟</span><span class="float f3">🥟</span><div class="wrap">
+<span class="badge" id="restaurant-location-badge">Mikołów · ul. Młyńska 2</span>
+<h1><span id="hero-title">Kurczak z rożna</span> <em id="hero-subtitle">prosto na Twój stół</em></h1>
+<p id="hero-description">Złocisty, soczysty kurczak z rożna na wynos. Cały, pół albo ćwiartka, a do tego frytki, surówka i sos.</p>
+<div class="row"><a href="#menu" class="btn btn-p">Zobacz menu</a><a href="tel:+48452197824" id="hero-phone" class="btn btn-s">Zamów: 452 197 824</a></div>
+<div class="status"><span class="dot" id="dot"></span><span id="stat">Sprawdzam godziny…</span></div>
+</div></div>
+
+<div class="facts"><div class="wrap" id="facts-content">
+<div><b><span class="stars">★★★★★</span> <span id="rating-value">4,9</span></b><span id="rating-count">w Google · 26 opinii</span></div>
+</div></div>
+
+<section id="menu"><div class="wrap">
+<div class="center"><div class="eyebrow">Menu</div><h2>Wybierz swój zestaw</h2></div>
+
+<div id="menu-content">
+</div>
+<p class="note">Ceny w złotych. Zamówienia na wynos, najlepiej zadzwoń wcześniej, a my przygotujemy wszystko na Twój przyjazd.</p>
+</div></section>
+
+<section id="jak" class="band"><div class="wrap">
+<div class="center"><div class="eyebrow">Jak zamówić</div><h2>Trzy proste kroki</h2></div>
+<div class="steps" id="order-steps">
+</div>
+</div></section>
+
+<section id="opinie"><div class="wrap">
+<div class="center"><div class="eyebrow">Opinie</div><h2>Klienci o nas</h2></div>
+<div class="rev" id="reviews-content"></div>
+<p class="note"><a href="https://maps.app.goo.gl/hJu5gq3cdENFEJ2G9" id="reviews-link" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">Zobacz wszystkie opinie w Google →</a></p>
+</div></section>
+
+<section id="kontakt"><div class="wrap">
+<div class="center"><div class="eyebrow">Kontakt</div><h2 id="contact-heading">Odwiedź nas w Mikołowie</h2></div>
+<div class="contact">
+<div class="box">
+<h3>📍 Adres i telefon</h3>
+<p style="margin:0"><b id="contact-name">Kurczak z rożna</b><br><span id="contact-street">ul. Młyńska 2</span><br><span id="contact-city">43-190 Mikołów</span></p>
+<a class="tel" id="contact-phone" href="tel:+48452197824">452 197 824</a>
+<a class="btn btn-p" id="maps-link" href="https://maps.app.goo.gl/hJu5gq3cdENFEJ2G9" target="_blank" rel="noopener">Wyznacz trasę w Google Maps</a>
+</div>
+<div class="box">
+<h3>🕚 Godziny otwarcia</h3>
+<table id="hours"><tbody id="hours-body"></tbody></table>
+</div>
+</div></div></section>
+</main>
+
+<footer>
+<div class="logo" id="footer-brand">Kurczak z rożna</div>
+<div>© <span id="yr">2026</span> <span id="footer-details">Kurczak z rożna · ul. Młyńska 2, 43-190 Mikołów · tel. 452 197 824</span></div>
+</footer>
+
+<div class="bar"><a class="c" id="bar-phone" href="tel:+48452197824">📞 Zamów</a><a class="m" id="bar-maps" href="https://maps.app.goo.gl/hJu5gq3cdENFEJ2G9" target="_blank" rel="noopener">📍 Dojazd</a></div>
+
+</body>
+</html>
